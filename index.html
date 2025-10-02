@@ -129,19 +129,16 @@
             player.ready(function() {
                 const thisPlayer = this; // 'this' adalah instance player
 
-                // Opsi untuk plugin IMA (iklan)
+                // Opsi untuk plugin IMA (iklan).
+                // Dengan menyediakan adTagUrl di sini, plugin akan secara otomatis
+                // menginisialisasi dan meminta iklan saat sudah siap.
                 const imaOptions = {
                     id: 'ad-player',
                     adTagUrl: 'https://vast.yomeno.xyz/vast?spot_id=1466279'
                 };
 
-                // Muat plugin iklan IMA
+                // Muat plugin iklan IMA. Plugin akan menangani sisanya.
                 thisPlayer.ima(imaOptions);
-
-                // Inisialisasi kontainer iklan (diperlukan oleh IMA)
-                thisPlayer.ima.initializeAdDisplayContainer();
-                // Meminta iklan untuk dimuat
-                thisPlayer.ima.requestAds();
                 
                 // Event listener untuk menangani error pada iklan
                 thisPlayer.on('adserror', function(event) {
