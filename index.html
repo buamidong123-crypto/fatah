@@ -4,88 +4,170 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAS KEUN - Platform Hadiah</title>
-    <!-- Memuat Tailwind CSS untuk styling -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Memuat Google Fonts (Inter) -->
+    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!-- Kode Iklan -->
-    <script async src="https://js.wpadmngr.com/static/adManager.js" data-admpid="376893"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Video.js CSS -->
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
+    <!-- Video.js IMA Plugin CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/videojs-ima@2.1.0/dist/videojs.ima.css" rel="stylesheet">
     <style>
         /* Menggunakan font Inter sebagai default */
         body {
             font-family: 'Inter', sans-serif;
         }
+        /* Custom styles for video player to ensure it looks good */
+        .video-js {
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
-<body class="bg-black text-white relative">
+<body class="bg-black text-white">
 
-    <!-- Kontainer Iklan di Kiri Atas (Sejajar ke Bawah) -->
-    <div class="absolute top-4 left-4 flex flex-col space-y-6">
-        <!-- Banner Iklan Kiri Atas -->
-        
-        <!-- Banner Iklan Kiri Atas Baru -->
-        
-    </div>
+    <!-- Kontainer Utama -->
+    <div class="min-h-screen flex flex-col items-center justify-center text-center p-4">
 
-    <!-- Kontainer Iklan di Kanan Atas (Sejajar ke Bawah) -->
-    <div class="absolute top-4 right-4 flex flex-col space-y-6">
-        <!-- Banner Iklan Kanan Atas -->
-        
-        <!-- Banner Iklan Kanan Atas Baru -->
-        
-    </div>
-
-    <!-- Kontainer utama yang menengahkan konten di layar -->
-    <div class="flex flex-col items-center justify-center min-h-screen text-center p-4">
-
-        <!-- Judul Atas -->
-        <h2 class="text-2xl font-bold tracking-wider mb-4">
-            ALFatah.id
-        </h2>
+        <!-- Logo Teks Atas -->
+        <p class="text-sm text-gray-300 mb-8">ALFATAH.id</p>
 
         <!-- Judul Utama -->
-        <h1 class="text-7xl md:text-8xl font-black text-blue-500 uppercase tracking-wider mb-6">
+        <h1 class="text-7xl md:text-9xl font-extrabold text-blue-500 mb-8 tracking-wide">
             GAS KEUN
         </h1>
 
-        <!-- Tagline/Deskripsi -->
-        <div class="bg-gray-800 text-gray-200 text-sm font-medium px-4 py-2 rounded-md mb-10">
+        <!-- Badge Platform -->
+        <div class="bg-gray-800 text-gray-200 text-sm py-2 px-4 rounded-md mb-8">
             Platform Hadiah Terpercaya
         </div>
 
-        <!-- Tombol Aksi -->
-        <button onclick="showAd()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center space-x-3 transition-colors duration-300 shadow-lg shadow-blue-500/30 cursor-pointer">
+        <!-- Tombol Klaim Hadiah -->
+        <button id="play-ad-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg flex items-center justify-center space-x-3 transition-colors duration-300">
             <!-- Ikon Play (SVG) -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
             </svg>
             <span>Tonton Iklan untuk Klaim Hadiah</span>
         </button>
 
-        <!-- Penempatan Banner Iklan Bawah -->
-        
-
     </div>
 
-    <script>
-        // Fungsi ini dipanggil setiap kali tombol diklik.
-        function showAd() {
-            // Skrip pengelola iklan biasanya akan menangani pembukaan tab baru
-            // atau pop-under secara otomatis. Membuka tab kosong seperti ini
-            // adalah pemicu yang umum agar skrip iklan berjalan.
-            const adWindow = window.open('about:blank', '_blank');
+    <!-- Modal Kontainer Iklan -->
+    <div id="ad-container" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4 transition-opacity duration-300">
+        <div class="relative w-full max-w-3xl aspect-video bg-black rounded-lg">
+             <!-- Video player untuk iklan -->
+            <video id="ad-player" class="video-js vjs-default-skin" playsinline preload="auto"></video>
+            <!-- Tombol Tutup Modal -->
+            <button id="close-ad-btn" class="absolute -top-3 -right-3 text-3xl text-white bg-gray-800 rounded-full w-10 h-10 flex items-center justify-center leading-none hover:bg-gray-700 focus:outline-none">&times;</button>
+        </div>
+    </div>
+    
+    <!-- Modal Error -->
+    <div id="error-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-lg p-6 text-black text-center shadow-xl max-w-sm">
+            <h3 class="text-lg font-bold mb-2">Terjadi Kesalahan</h3>
+            <p id="error-message" class="mb-4">Gagal memuat iklan. Silakan coba lagi.</p>
+            <button id="close-error-btn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 w-full">Tutup</button>
+        </div>
+    </div>
 
-            // Memeriksa jika pop-up diblokir oleh browser.
-            if (!adWindow || adWindow.closed || typeof adWindow.closed == 'undefined') {
-                console.log("Pop-up mungkin diblokir oleh browser. Iklan bisa jadi tidak muncul.");
+
+    <!-- Google IMA SDK -->
+    <script src="https://imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
+    <!-- Video.js -->
+    <script src="https://vjs.zencdn.net/8.10.0/video.js"></script>
+    <!-- Video.js Ad Contribution Suite -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-contrib-ads@7.2.0/dist/videojs-contrib-ads.min.js"></script>
+    <!-- Video.js IMA Plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/videojs-ima@2.1.0/dist/videojs.ima.min.js"></script>
+
+    <script>
+        // Ambil elemen dari DOM
+        const playAdBtn = document.getElementById('play-ad-btn');
+        const adContainer = document.getElementById('ad-container');
+        const closeAdBtn = document.getElementById('close-ad-btn');
+        const errorModal = document.getElementById('error-modal');
+        const errorMessage = document.getElementById('error-message');
+        const closeErrorBtn = document.getElementById('close-error-btn');
+        
+        let player;
+        const adPlayerElement = document.getElementById('ad-player');
+
+        // Opsi untuk video player
+        const playerOptions = {
+            controls: true,
+            autoplay: true,
+        };
+
+        // Fungsi untuk menampilkan modal error
+        function showErrorModal(message) {
+            errorMessage.textContent = message;
+            errorModal.classList.remove('hidden');
+        }
+
+        // Fungsi untuk menutup modal iklan dan membersihkan player
+        function closeAdModal() {
+            adContainer.classList.add('hidden');
+            if (player) {
+                player.dispose(); // Hapus instance player untuk membebaskan memori
+                player = null;
             }
         }
-    </script>
 
+        // Event listener untuk tombol utama "Tonton Iklan"
+        playAdBtn.addEventListener('click', () => {
+            // Tampilkan modal
+            adContainer.classList.remove('hidden');
+            
+            // Inisialisasi player
+            player = videojs(adPlayerElement, playerOptions);
+
+            // Menunggu player siap sepenuhnya sebelum menginisialisasi plugin iklan
+            player.ready(function() {
+                const thisPlayer = this; // 'this' adalah instance player
+
+                // Opsi untuk plugin IMA (iklan)
+                const imaOptions = {
+                    id: 'ad-player',
+                    adTagUrl: 'https://vast.yomeno.xyz/vast?spot_id=1466279'
+                };
+
+                // Muat plugin iklan IMA
+                thisPlayer.ima(imaOptions);
+
+                // Inisialisasi kontainer iklan (diperlukan oleh IMA)
+                thisPlayer.ima.initializeAdDisplayContainer();
+                // Meminta iklan untuk dimuat
+                thisPlayer.ima.requestAds();
+                
+                // Event listener untuk menangani error pada iklan
+                thisPlayer.on('adserror', function(event) {
+                    console.error('Ad Error:', event);
+                    showErrorModal('Gagal memuat iklan. Silakan coba lagi.');
+                    closeAdModal();
+                });
+
+                // Event listener untuk saat semua iklan selesai diputar
+                thisPlayer.on('adend', function() {
+                    console.log('Iklan telah selesai.');
+                    // Beri sedikit jeda sebelum menutup
+                    setTimeout(closeAdModal, 500);
+                });
+            });
+        });
+
+        // Event listener untuk tombol tutup (X)
+        closeAdBtn.addEventListener('click', closeAdModal);
+
+        // Event listener untuk tombol tutup pada modal error
+        closeErrorBtn.addEventListener('click', () => {
+            errorModal.classList.add('hidden');
+        });
+
+    </script>
 </body>
 </html>
-
 
